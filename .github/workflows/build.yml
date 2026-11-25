@@ -1,0 +1,31 @@
+
+name: Build Club Hidro
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: devkitpro/devkitarm:latest
+
+    steps:
+      - name: Baixar projeto
+        uses: actions/checkout@v4
+
+      - name: Instalar bibliotecas 3DS
+        run: |
+          dkp-pacman -Syu --noconfirm
+          dkp-pacman -S --needed --noconfirm 3ds-dev
+
+      - name: Compilar Club Hidro
+        run: make -j2
+
+      - name: Disponibilizar jogo
+        uses: actions/upload-artifact@v4
+        with:
+          name: ClubHidro-3DS
+          path: "*.3dsx"
