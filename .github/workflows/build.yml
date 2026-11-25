@@ -1,4 +1,3 @@
-
 name: Build Club Hidro
 
 on:
@@ -16,10 +15,11 @@ jobs:
       - name: Baixar projeto
         uses: actions/checkout@v4
 
-      - name: Instalar bibliotecas 3DS
+      - name: Verificar ferramentas
         run: |
-          dkp-pacman -Syu --noconfirm
-          dkp-pacman -S --needed --noconfirm 3ds-dev
+          echo "$DEVKITPRO"
+          echo "$DEVKITARM"
+          ls "$DEVKITPRO/libctru"
 
       - name: Compilar Club Hidro
         run: make -j2
@@ -29,3 +29,4 @@ jobs:
         with:
           name: ClubHidro-3DS
           path: "*.3dsx"
+          if-no-files-found: error
