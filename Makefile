@@ -12,13 +12,19 @@ SOURCES := source
 
 ARCH := -march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 
+CC := $(DEVKITARM)/bin/arm-none-eabi-gcc
+CXX := $(DEVKITARM)/bin/arm-none-eabi-g++
+LD := $(CC)
+AR := $(DEVKITARM)/bin/arm-none-eabi-ar
+
 CFLAGS := -g -Wall -O2 -mword-relocations $(ARCH)
 CFLAGS += $(INCLUDE) -D__3DS__
 
 LDFLAGS = -specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 LIBS := -lcitro2d -lcitro3d -lctru -lm
-LIBDIRS := $(CTRULIB)
+
+LIBDIRS := $(CTRULIB) $(DEVKITPRO)/portlibs/3ds
 
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 
@@ -44,6 +50,7 @@ clean:
 else
 
 $(OUTPUT).3dsx: $(OUTPUT).elf
+
 $(OUTPUT).elf: $(OFILES)
 
 -include $(DEPSDIR)/*.d
